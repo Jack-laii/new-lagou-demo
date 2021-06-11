@@ -1,13 +1,12 @@
 <template>
-  <div id="app">
-    <!-- 跟路由出口，用于渲染路由组件 -->
-    <router-view/>
+  <div class="404">
+    <h1>404 Not Fond</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'ErrorPageIndex'
 }
 </script>
 

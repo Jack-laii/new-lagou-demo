@@ -5,8 +5,6 @@ import router from './router'
 import store from './store'
 // 引入 element 组件库
 import ElementUI from 'element-ui'
-// 引入 element 主题文件
-// import 'element-ui/lib/theme-chalk/index.css'
 // 引入 自定义全局样式文件
 import './styles/index.scss'
 
