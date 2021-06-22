@@ -1,10 +1,17 @@
 <template>
-  <div class="resource">资源管理</div>
+  <div class="resource">
+    <rosource-list></rosource-list>
+  </div>
 </template>
 
 <script>
+import RosourceList from './components/List'
+
 export default {
-  name: 'ResourceIndex'
+  name: 'ResourceIndex',
+  components: {
+    RosourceList
+  }
 }
 </script>
 

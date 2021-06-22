@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '@/store'
 
 // 传统引包方式
 // import Login from '@/views/login/index'
@@ -26,6 +27,11 @@ const routes = [
   {
     path: '/',
     component: () => import(/* webpackChunkName: 'layout' */'@/views/layout/index'),
+    // 路由中设置登录检测
+    meta: {
+      // 需要验证
+      requiresAuth: true
+    },
     children: [
       {
         path: '/home',
@@ -66,6 +72,31 @@ const routes = [
         path: '/advert-space',
         name: 'advert-space',
         component: () => import(/* webpackChunkName: 'advert-space' */'@/views/advert-space/index')
+      },
+      // 添加菜单路由组件
+      {
+        path: '/menu/create',
+        name: 'menu-create',
+        component: () => import(/* webpackChunkName: 'menu-create' */'@/views/menu/create')
+      },
+      // 编辑菜单路由组件
+      {
+        path: '/menu/:id/edit',
+        name: 'menu-edit',
+        component: () => import(/* webpackChunkName: 'menu-edit' */'@/views/menu/edit')
+      },
+      // 分配菜单路由组件
+      {
+        path: '/role/:roleId/alloc-menu',
+        name: 'alloc-menu',
+        component: () => import(/* webpackChunkName: 'alloc-menu' */'@/views/role/alloc-menu'),
+        props: true
+      },
+      // 添加课程
+      {
+        path: '/course/create',
+        name: 'course-create',
+        component: () => import(/* webpackChunkName: 'course-create' */'@/views/course/create')
       }
     ]
   },
@@ -78,6 +109,25 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+// 全局路由守卫
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    // 检测 如果 store 中用户 存在，跳转到登录页面
+    if (!store.state.user) {
+      return next({
+        name: 'login',
+        // 通过 query 属性给 url 设置查询字符串参数（键值为自定义）
+        query: {
+          redirect: to.fullPath
+        }
+      })
+    }
+    next()
+  } else {
+    next()
+  }
 })
 
 export default router
